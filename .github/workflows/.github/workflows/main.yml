@@ -1,0 +1,27 @@
+name: Update Asana Task Titles
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update-titles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          ASANA_PAT: ${{ secrets.ASANA_PAT }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run: python main.py
